@@ -10,4 +10,15 @@ node {
     stage('Test'){
         sh 'python3 -m pytest tests -sv --alluredir=allure_results'
     }
+    stage('Report'){
+        script {
+            allure([
+                includeProperties: false,
+                jdk: '',
+                properties: [],
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'allure_results']]
+            ])
+        }
+    }
 }
