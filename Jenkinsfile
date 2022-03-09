@@ -8,6 +8,6 @@ node {
         sh 'python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt'
     }
     stage('Test'){
-        sh 'pytest tests -sv --alluredir=allure_results'
+        sh 'python3 -m pytest tests -sv --alluredir=allure_results'
     }
 }
