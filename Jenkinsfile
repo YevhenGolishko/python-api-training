@@ -4,7 +4,7 @@ node {
         git branch: 'main',
         url: 'https://github.com/YevhenGolishko/python-api-training.git'
     }
-    stage("Install deps"){
+    stage("Run API Tests"){
         sh """
         # create new virtualenv
         rm -rf testvenv-${env.BUILD_ID}
@@ -12,10 +12,8 @@ node {
         # activate virtualenv
         . testvenv-${env.BUILD_ID}/bin/activate
         pip install -r requirements.txt
+        pytest tests -sv --alluredir=allure_results
         """
-    }
-    stage('Test'){
-        sh 'pytest tests -sv --alluredir=allure_results'
     }
     stage('Report'){
         script {
