@@ -1,7 +1,17 @@
 name: Automated tests
 
 on:
-  push
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Choose target
+        required: true
+        default:
+        type: choice
+        options:
+          - first_test
+          - second_test
+
 
 jobs:
   test:
@@ -15,6 +25,10 @@ jobs:
           python-version: "3.10"
       - name: Install Dependencies
         run: pip install -r requirements.txt
-      - name: Run Tests
-        run: pytest
+      - name: first_test
+        if: "github.event.inputs.deployment_target == 'first_test'"
+        run: pytest tests/test_user_registration.py::test_can_register_user_with_valid_credentials
+      - name: second_test
+        if: "github.event.inputs.deployment_target == 'second_test'"
+        run: pytest tests/test_user_registration.py::test_can_not_register_user_with_same_credentials_twice
 
